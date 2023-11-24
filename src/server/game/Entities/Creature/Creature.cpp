@@ -2041,11 +2041,12 @@ void Creature::Respawn(bool force)
         }
 
         LOG_DEBUG("entities.unit", "Respawning creature {} (SpawnId: {}, {})", GetName(), GetSpawnId(), GetGUID().ToString());
+        setDeathState(DeathState::Respawning);
         m_respawnTime = 0;
         ResetPickPocketLootTime();
         loot.clear();
-        SelectLevel();
 
+        SelectLevel();
         setDeathState(DeathState::JustRespawned);
 
         // MDic - Acidmanifesto
