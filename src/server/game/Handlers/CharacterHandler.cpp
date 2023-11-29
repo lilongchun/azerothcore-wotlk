@@ -2158,7 +2158,7 @@ void WorldSession::HandleCharFactionOrRaceChangeCallback(std::shared_ptr<Charact
             stmt->SetData(1, racialSkillId);
             trans->Append(stmt);
         }
-        
+
         // Switch Languages
         // delete all languages first
         stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_CHAR_SKILL_LANGUAGES);
