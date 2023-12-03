@@ -2118,41 +2118,42 @@ void WorldSession::HandleCharFactionOrRaceChangeCallback(std::shared_ptr<Charact
         switch (oldRace)
         {
             case RACE_HUMAN:
-                racialSkillId = 754;
+                racialSkillId = SKILL_RACIAL_HUMAN;
                 break;
             case RACE_ORC:
-                racialSkillId = 125;
+                racialSkillId = SKILL_ORC_RACIAL;
                 break;
             case RACE_DWARF:
-                racialSkillId = 101;
+                racialSkillId = SKILL_RACIAL_DWARVEN;
                 break;
             case RACE_NIGHTELF:
-                racialSkillId = 126;
+                racialSkillId = SKILL_RACIAL_NIGHT_ELF;
                 break;
             case RACE_UNDEAD_PLAYER:
-                racialSkillId = 220;
+                racialSkillId = SKILL_RACIAL_UNDED;
                 break;
             case RACE_TAUREN:
-                racialSkillId = 124;
+                racialSkillId = SKILL_RACIAL_TAUREN;
                 break;
             case RACE_GNOME:
-                racialSkillId = 753;
+                racialSkillId = SKILL_RACIAL_GNOME;
                 break;
             case RACE_TROLL:
-                racialSkillId = 733;
+                racialSkillId = SKILL_RACIAL_TROLL;
                 break;
             case RACE_BLOODELF:
-                racialSkillId = 756;
+                racialSkillId = SKILL_RACIAL_BLOODELF;
                 break;
             case RACE_DRAENEI:
-                racialSkillId = 760;
+                racialSkillId = SKILL_RACIAL_DRAENEI;
                 break;
             default:
                 racialSkillId = 0;
                 break;
         }
 
-        if (racialSkillId != 0) {
+        if (racialSkillId)
+        {
             stmt = CharacterDatabase.GetPreparedStatement(CHAR_DEL_CHAR_SKILL_BY_SKILL);
             stmt->SetData(0, lowGuid);
             stmt->SetData(1, racialSkillId);
