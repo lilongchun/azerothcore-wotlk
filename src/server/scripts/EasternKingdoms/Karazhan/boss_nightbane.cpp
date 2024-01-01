@@ -88,6 +88,7 @@ struct boss_nightbane : public BossAI
         me->SetDisableGravity(_intro);
         me->SetWalk(false);
         me->setActive(true);
+        me->SetFarVisible(true);
 
         _flying = false;
         _movement = false;

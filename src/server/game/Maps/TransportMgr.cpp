@@ -411,8 +411,6 @@ MotionTransport* TransportMgr::CreateTransport(uint32 entry, ObjectGuid::LowType
     if (map && map->IsDungeon())
         trans->m_zoneScript = map->ToInstanceMap()->GetInstanceScript();
 
-    // xinef: transports are active so passengers can be relocated (grids must be loaded)
-    trans->setActive(true);
     HashMapHolder<MotionTransport>::Insert(trans);
     trans->GetMap()->AddToMap<MotionTransport>(trans);
     return trans;
@@ -463,13 +461,14 @@ void TransportMgr::SpawnContinentTransports()
                 float x = fields[1].Get<float>();
                 float y = fields[2].Get<float>();
 
-                MapEntry const* mapEntry = sMapStore.LookupEntry(mapId);
-                if (mapEntry && !mapEntry->Instanceable())
-                    if (Map* map = sMapMgr->CreateBaseMap(mapId))
+                sMapMgr->DoForAllMapsWithMapId(mapId, [x, y, &count](Map* map)
                     {
-                        map->LoadGrid(x, y);
-                        ++count;
-                    }
+                        if (!map->Instanceable())
+                        {
+                            map->LoadGrid(x, y);
+                            ++count;
+                        }
+                    });
             } while (result2->NextRow());
         }
 
