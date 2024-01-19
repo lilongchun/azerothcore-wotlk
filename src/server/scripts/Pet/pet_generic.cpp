@@ -79,7 +79,7 @@ struct npc_pet_gen_soul_trader_beacon : public ScriptedAI
                 Talk(0);
                 break;
             case EVENT_ADD_TOKEN:
-                me->RemoveAurasDueToSpell(SPELL_EMOTE_STATE_SWIM_RUN);
+                me->RemoveAura(SPELL_EMOTE_STATE_SWIM_RUN);
                 me->CastSpell(me, SPELL_CREATE_TOKEN, true);
                 Talk(2);
                 break;
@@ -219,7 +219,7 @@ struct npc_pet_gen_argent_pony_bridle : public ScriptedAI
 
         if (duration && aura)
         {
-            if (Aura* aur = me->AddAura(aura, me))
+            if (Aura* aur = me->AddAura(aura))
                 aur->SetDuration(duration);
         }
     }
@@ -237,7 +237,7 @@ struct npc_pet_gen_argent_pony_bridle : public ScriptedAI
                 if (owner->IsMounted() && !me->IsMounted())
                     me->CastSpell(me, SPELL_PONY_MOUNT, false);
                 else if (!owner->IsMounted() && me->IsMounted())
-                    me->RemoveAurasDueToSpell(SPELL_PONY_MOUNT);
+                    me->RemoveAura(SPELL_PONY_MOUNT);
             }
         }
     }
@@ -255,7 +255,7 @@ struct npc_pet_gen_argent_pony_bridle : public ScriptedAI
         if (param > 60000)
         {
             if (_lastAura)
-                me->RemoveAurasDueToSpell(_lastAura);
+                me->RemoveAura(_lastAura);
             _lastAura = param;
             return;
         }
@@ -641,7 +641,7 @@ struct npc_pet_gen_plump_turkey : public PassiveAI
         if (type == EFFECT_MOTION_TYPE && id == 1)
         {
             me->KillSelf();
-            me->AddAura(SPELL_TURKEY_STARTS_TO_BURN, me);
+            me->AddAura(SPELL_TURKEY_STARTS_TO_BURN);
         }
     }
 
@@ -711,7 +711,7 @@ struct npc_pet_gen_toxic_wasteling : public PassiveAI
                     me->GetMotionMaster()->Clear(false);
                     me->GetMotionMaster()->MoveFollow(owner, PET_FOLLOW_DIST, me->GetFollowAngle(), MOTION_SLOT_ACTIVE);
                 }
-                me->AddAura(71854, me); // Growth
+                me->AddAura(71854); // Growth
                 checkTimer = 0;
             }
         }
@@ -810,7 +810,7 @@ struct npc_pet_darting_hatchling : public NullCreatureAI
         checkTimer += diff;
         if (checkTimer >= 2000)
         {
-            me->RemoveAurasDueToSpell(SPELL_DARTING_FEAR);
+            me->RemoveAura(SPELL_DARTING_FEAR);
             checkTimer = 0;
             goFast = false;
         }

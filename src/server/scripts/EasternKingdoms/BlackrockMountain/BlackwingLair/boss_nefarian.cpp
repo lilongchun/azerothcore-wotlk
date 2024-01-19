@@ -793,10 +793,10 @@ struct npc_corrupted_totem : public ScriptedAI
         me->AddUnitState(UNIT_STATE_ROOT);
         if (!me->HasAura(SPELL_ROOT_SELF))
         {
-            me->AddAura(SPELL_ROOT_SELF, me);
+            me->AddAura(SPELL_ROOT_SELF);
         }
 
-        me->AddAura(AURA_AVOIDANCE, me);
+        me->AddAura(AURA_AVOIDANCE);
         _scheduler.CancelAll();
     }
 
@@ -854,20 +854,20 @@ struct npc_corrupted_totem : public ScriptedAI
                     {
                         if (!curr->HasAura(spellId))
                         {
-                            curr->AddAura(spellId, curr);
+                            curr->AddAura(spellId);
                         }
                     }
                     else
                     {
                         if (curr->HasAura(spellId))
                         {
-                            curr->RemoveAurasDueToSpell(spellId);
+                            curr->RemoveAura(spellId);
                         }
                     }
                 }
                 else
                 {
-                    curr->RemoveAurasDueToSpell(spellId);
+                    curr->RemoveAura(spellId);
                 }
             }
         }
@@ -939,7 +939,7 @@ struct npc_drakonid_spawner : public ScriptedAI
     {
         if (action == ACTION_SPAWNER_STOP)
         {
-            me->RemoveAurasDueToSpell(SPELL_SPAWN_DRAKONID_GEN);
+            me->RemoveAura(SPELL_SPAWN_DRAKONID_GEN);
             _scheduler.CancelAll();
         }
     }

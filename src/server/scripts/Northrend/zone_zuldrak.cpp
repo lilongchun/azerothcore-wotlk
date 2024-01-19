@@ -90,7 +90,7 @@ public:
 
                     // if we are here, all is ok (aura and item present)
                     player->DestroyItemCount(itemEntry, 1, true);
-                    player->RemoveAurasDueToSpell(auraId);
+                    player->RemoveAura(auraId);
 
                     if (counter < 6)
                     {
@@ -481,7 +481,7 @@ public:
         void SpellHitTarget(Unit* target, SpellInfo const* spellInfo) override
         {
             if (spellInfo->Id == SPELL_THROW_PORTAL_CRYSTAL)
-                if (Aura* aura = target->AddAura(SPELL_ARTHAS_PORTAL, target))
+                if (Aura* aura = target->AddAura(SPELL_ARTHAS_PORTAL))
                     aura->SetDuration(48000);
         }
 
@@ -515,7 +515,7 @@ public:
                     Talk(SAY_DRAKURU_2);
                     if (Player* player = ObjectAccessor::GetPlayer(*me, playerGUID))
                         player->CastSpell(player, SPELL_SCOURGE_DISGUISE_EXPIRING, true);
-                    if (Aura* aur = me->AddAura(SPELL_BLIGHT_FOG, me))
+                    if (Aura* aur = me->AddAura(SPELL_BLIGHT_FOG))
                         aur->SetDuration(22000);
                     break;
                 case EVENT_BETRAYAL_4:
@@ -733,9 +733,9 @@ public:
         {
             if (spell->Id == SPELL_FREE_RAGECLAW)
             {
-                me->RemoveAurasDueToSpell(SPELL_LEFT_CHAIN);
-                me->RemoveAurasDueToSpell(SPELL_RIGHT_CHAIN);
-                me->RemoveAurasDueToSpell(SPELL_KNEEL);
+                me->RemoveAura(SPELL_LEFT_CHAIN);
+                me->RemoveAura(SPELL_RIGHT_CHAIN);
+                me->RemoveAura(SPELL_KNEEL);
                 me->SetFaction(me->GetCreatureTemplate()->faction);
                 DoCast(me, SPELL_UNSHACKLED, true);
                 Talk(SAY_RAGECLAW);

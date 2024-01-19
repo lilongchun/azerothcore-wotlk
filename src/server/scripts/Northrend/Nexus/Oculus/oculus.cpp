@@ -829,7 +829,7 @@ public:
         {
             if (Unit* caster = GetCaster())
             {
-                caster->RemoveAurasDueToSpell(SPELL_RUBY_EVASIVE_MANEUVERS);
+                caster->RemoveAura(SPELL_RUBY_EVASIVE_MANEUVERS);
                 caster->ModifyAuraState(AURA_STATE_UNKNOWN22, false);
             }
         }
@@ -866,7 +866,7 @@ public:
             if (!caster->getAttackers().empty())
             {
                 if (caster->HasAura(SPELL_SOAR_BUFF))
-                    caster->RemoveAurasDueToSpell(SPELL_SOAR_BUFF);
+                    caster->RemoveAura(SPELL_SOAR_BUFF);
 
                 PreventDefaultAction();
                 return;
@@ -930,7 +930,7 @@ public:
             {
                 case EFFECT_1:
                     _drakeGUID = drake->GetGUID();
-                    caster->AddAura(SPELL_DRAKE_FLAG_VISUAL, caster);
+                    caster->AddAura(SPELL_DRAKE_FLAG_VISUAL);
                     caster->SetUnitFlag(UNIT_FLAG_NON_ATTACKABLE);
                     caster->RemoveAurasByType(SPELL_AURA_MOD_SHAPESHIFT);
                     drake->CastSpell(drake, SPELL_SOAR_TRIGGER);
@@ -938,7 +938,7 @@ public:
                         drake->CastSpell(drake, SPELL_RUBY_EVASIVE_AURA);
                     break;
                 case EFFECT_2:
-                    caster->AddAura(SPELL_SCALE_STATS, drake);
+                    drake->AddAura(SPELL_SCALE_STATS);
                     PreventDefaultAction();
                     break;
             }
@@ -956,12 +956,12 @@ public:
             if (drake)
             {
                 drake->RemoveUnitFlag(UNIT_FLAG_POSSESSED);
-                drake->RemoveAurasDueToSpell(GetId());
-                drake->RemoveAurasDueToSpell(SPELL_SOAR_TRIGGER);
-                drake->RemoveAurasDueToSpell(SPELL_RUBY_EVASIVE_AURA);
+                drake->RemoveAura(GetId());
+                drake->RemoveAura(SPELL_SOAR_TRIGGER);
+                drake->RemoveAura(SPELL_RUBY_EVASIVE_AURA);
             }
             caster->RemoveUnitFlag(UNIT_FLAG_NON_ATTACKABLE);
-            caster->RemoveAurasDueToSpell(SPELL_DRAKE_FLAG_VISUAL);
+            caster->RemoveAura(SPELL_DRAKE_FLAG_VISUAL);
         }
 
         void Register() override
@@ -999,7 +999,7 @@ public:
             if (!drake)
             {
                 caster->RemoveUnitFlag(UNIT_FLAG_NON_ATTACKABLE);
-                caster->RemoveAurasDueToSpell(SPELL_DRAKE_FLAG_VISUAL);
+                caster->RemoveAura(SPELL_DRAKE_FLAG_VISUAL);
             }
         }
 

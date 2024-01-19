@@ -304,7 +304,7 @@ public:
                             if (Creature* razor = instance->GetCreature(razorgoreGUID))
                             {
                                 SetData(DATA_EGG_EVENT, DONE);
-                                razor->RemoveAurasDueToSpell(19832); // MindControl
+                                razor->RemoveAura(19832); // MindControl
                                 DoRemoveAurasDueToSpellOnPlayers(19832);
                             }
                             _events.ScheduleEvent(EVENT_RAZOR_PHASE_TWO, 1s);
@@ -497,7 +497,7 @@ public:
             // If the victim of the spell does not have "Onyxia Scale Cloak" - add the Shadow Flame DoT (22682)
             if (Unit* victim = GetHitUnit())
                 if (!victim->HasAura(SPELL_ONYXIA_SCALE_CLOAK))
-                    victim->AddAura(SPELL_SHADOW_FLAME_DOT, victim);
+                    victim->AddAura(SPELL_SHADOW_FLAME_DOT);
         }
 
         void Register() override

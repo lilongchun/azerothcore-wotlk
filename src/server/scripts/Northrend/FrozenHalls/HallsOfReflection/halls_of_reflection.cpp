@@ -339,7 +339,7 @@ public:
                 {
                     pUther->SetUInt32Value(UNIT_NPC_EMOTESTATE, EMOTE_ONESHOT_NONE);
                     pUther->SetVisible(true);
-                    if (Aura* a = pUther->AddAura(SPELL_SHADOWMOURNE_VISUAL, pUther))
+                    if (Aura* a = pUther->AddAura(SPELL_SHADOWMOURNE_VISUAL))
                         a->SetDuration(8000);
                 }
                 events.ScheduleEvent(EVENT_INTRO_A2_5, 2s);
@@ -468,14 +468,14 @@ public:
                 break;
 
             case EVENT_INTRO_H2_3_2:
-                me->RemoveAurasDueToSpell(SPELL_SUMMON_SOULS);
+                me->RemoveAura(SPELL_SUMMON_SOULS);
                 events.ScheduleEvent(EVENT_INTRO_H2_4, 2s);
                 break;
             case EVENT_INTRO_H2_4:
                 if (Creature* pUther = pInstance->instance->GetCreature(pInstance->GetGuidData(NPC_UTHER)))
                 {
                     pUther->SetVisible(true);
-                    if (Aura* a = pUther->AddAura(SPELL_SHADOWMOURNE_VISUAL, pUther))
+                    if (Aura* a = pUther->AddAura(SPELL_SHADOWMOURNE_VISUAL))
                     {
                         a->SetDuration(8000);
                     }
@@ -671,7 +671,7 @@ public:
                     if (pFalric->IsAlive())
                     {
                         pFalric->GetMotionMaster()->MovePoint(0, FalricMovePos);
-                        if (Aura* a = pFalric->AddAura(SPELL_SHADOWMOURNE_VISUAL, pFalric))
+                        if (Aura* a = pFalric->AddAura(SPELL_SHADOWMOURNE_VISUAL))
                             a->SetDuration(8000);
                     }
                 }
@@ -683,7 +683,7 @@ public:
                     if (pMarwyn->IsAlive())
                     {
                         pMarwyn->GetMotionMaster()->MovePoint(0, MarwynMovePos);
-                        if (Aura* a = pMarwyn->AddAura(SPELL_SHADOWMOURNE_VISUAL, pMarwyn))
+                        if (Aura* a = pMarwyn->AddAura(SPELL_SHADOWMOURNE_VISUAL))
                             a->SetDuration(8000);
                     }
                 }

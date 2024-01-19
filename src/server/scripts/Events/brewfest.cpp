@@ -856,8 +856,8 @@ class spell_brewfest_main_ram_buff : public AuraScript
         {
             if (privateLevel)
             {
-                caster->RemoveAurasDueToSpell(SPELL_CANTER);
-                caster->RemoveAurasDueToSpell(SPELL_GALLOP);
+                caster->RemoveAura(SPELL_CANTER);
+                caster->RemoveAura(SPELL_GALLOP);
             }
 
             aur->SetStackAmount(1);
@@ -887,7 +887,7 @@ class spell_brewfest_main_ram_buff : public AuraScript
                 // One click to maintain speed, more to increase
                 if (stack < 2)
                 {
-                    caster->RemoveAurasDueToSpell(SPELL_TROT);
+                    caster->RemoveAura(SPELL_TROT);
                     questTick = 0;
                     privateLevel--;
                     mode = 2; // apply
@@ -947,7 +947,7 @@ class spell_brewfest_main_ram_buff : public AuraScript
     void HandleEffectRemove(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
     {
         if (Unit* target = GetTarget())
-            target->RemoveAurasDueToSpell(SPELL_RAM_FATIGUE);
+            target->RemoveAura(SPELL_RAM_FATIGUE);
     }
 
     void Register() override
@@ -1338,7 +1338,7 @@ struct npc_brew_bubble : public NullCreatureAI
                     if (Aura* aura = me->GetAura(SPELL_BUBBLE_BUILD_UP))
                         aura->ModStackAmount(stacksTarget + 1);
                     else
-                        me->AddAura(SPELL_BUBBLE_BUILD_UP, me);
+                        me->AddAura(SPELL_BUBBLE_BUILD_UP);
 
                     target->ToCreature()->DespawnOrUnsummon();
                     DoAction(0);

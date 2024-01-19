@@ -279,7 +279,7 @@ class spell_item_with_mount_speed : public AuraScript
         Unit* target = GetTarget();
         if (auto spellId = getMountSpellId())
         {
-            target->RemoveAurasDueToSpell(spellId);
+            target->RemoveAura(spellId);
         }
     }
 
@@ -426,7 +426,7 @@ class spell_item_shifting_naaru_silver : public AuraScript
     void OnApply(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
     {
         if (GetTarget() == GetCaster())
-            if (Aura* aur = GetTarget()->AddAura(45044 /*Limitless Power*/, GetTarget()))
+            if (Aura* aur = GetTarget()->AddAura(45044 /*Limitless Power*/))
                 aur->SetDuration(GetDuration());
     }
 
@@ -705,7 +705,7 @@ class spell_item_powerful_anti_venom : public SpellScript
 
             for (std::list<uint32>::const_iterator itr = removeList.begin(); itr != removeList.end(); ++itr)
             {
-                target->RemoveAurasDueToSpell(*itr);
+                target->RemoveAura(*itr);
             }
         }
     }
@@ -737,7 +737,7 @@ class spell_item_strong_anti_venom : public SpellScript
             }
 
             for (std::list<uint32>::const_iterator itr = removeList.begin(); itr != removeList.end(); ++itr)
-                target->RemoveAurasDueToSpell(*itr);
+                target->RemoveAura(*itr);
         }
     }
 
@@ -771,7 +771,7 @@ class spell_item_anti_venom : public SpellScript
 
             for (std::list<uint32>::const_iterator itr = removeList.begin(); itr != removeList.end(); ++itr)
             {
-                target->RemoveAurasDueToSpell(*itr);
+                target->RemoveAura(*itr);
             }
         }
     }
@@ -1037,13 +1037,13 @@ class spell_item_blood_draining_enchant : public AuraScript
         {
             int32 basepoints = spellInfo->Effects[EFFECT_0].CalcValue() * this->GetStackAmount();
             eventInfo.GetActionTarget()->CastCustomSpell(spellInfo->Id, SPELLVALUE_BASE_POINT0, basepoints, eventInfo.GetActionTarget(), true);
-            eventInfo.GetActionTarget()->RemoveAurasDueToSpell(GetSpellInfo()->Id); // Remove rest auras
+            eventInfo.GetActionTarget()->RemoveAura(GetSpellInfo()->Id); // Remove rest auras
         }
 
         SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(64569 /*SPELL_BLOOD_RESERVE*/);
         int32 basepoints = spellInfo->Effects[EFFECT_0].CalcValue() * this->GetStackAmount();
         eventInfo.GetActionTarget()->CastCustomSpell(spellInfo->Id, SPELLVALUE_BASE_POINT0, basepoints, eventInfo.GetActionTarget(), true);
-        eventInfo.GetActionTarget()->RemoveAurasDueToSpell(GetSpellInfo()->Id); // Remove rest auras
+        eventInfo.GetActionTarget()->RemoveAura(GetSpellInfo()->Id); // Remove rest auras
     }
 
     void Register() override
@@ -1319,7 +1319,7 @@ class spell_item_instant_statue : public AuraScript
 
         if (Creature* creature = caster->FindNearestCreature(CREATURE_INSTANT_STATUE_PEDESTAL, 0.0f, true))
         {
-            creature->RemoveAurasDueToSpell(SPELL_INSTANT_STATUE);
+            creature->RemoveAura(SPELL_INSTANT_STATUE);
         }
     }
 
@@ -1557,7 +1557,7 @@ class spell_item_desperate_defense : public AuraScript
 
     void OnRemove(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
     {
-        GetTarget()->RemoveAurasDueToSpell(SPELL_SERVERSIDE_DESPERAT_DEFENSE);
+        GetTarget()->RemoveAura(SPELL_SERVERSIDE_DESPERAT_DEFENSE);
     }
 
     void Register() override
@@ -2415,7 +2415,7 @@ class spell_item_shadowmourne : public AuraScript
 
     void OnRemove(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
     {
-        GetTarget()->RemoveAurasDueToSpell(SPELL_SHADOWMOURNE_SOUL_FRAGMENT);
+        GetTarget()->RemoveAura(SPELL_SHADOWMOURNE_SOUL_FRAGMENT);
     }
 
     void Register() override
@@ -2445,11 +2445,11 @@ class spell_item_shadowmourne_soul_fragment : public AuraScript
                 target->CastSpell(target, SPELL_SHADOWMOURNE_VISUAL_LOW, true);
                 break;
             case 6:
-                target->RemoveAurasDueToSpell(SPELL_SHADOWMOURNE_VISUAL_LOW);
+                target->RemoveAura(SPELL_SHADOWMOURNE_VISUAL_LOW);
                 target->CastSpell(target, SPELL_SHADOWMOURNE_VISUAL_HIGH, true);
                 break;
             case 10:
-                target->RemoveAurasDueToSpell(SPELL_SHADOWMOURNE_VISUAL_HIGH);
+                target->RemoveAura(SPELL_SHADOWMOURNE_VISUAL_HIGH);
                 target->CastSpell(target, SPELL_SHADOWMOURNE_CHAOS_BANE_BUFF, true);
                 break;
             default:
@@ -2460,8 +2460,8 @@ class spell_item_shadowmourne_soul_fragment : public AuraScript
     void OnRemove(AuraEffect const* /*aurEff*/, AuraEffectHandleModes /*mode*/)
     {
         Unit* target = GetTarget();
-        target->RemoveAurasDueToSpell(SPELL_SHADOWMOURNE_VISUAL_LOW);
-        target->RemoveAurasDueToSpell(SPELL_SHADOWMOURNE_VISUAL_HIGH);
+        target->RemoveAura(SPELL_SHADOWMOURNE_VISUAL_LOW);
+        target->RemoveAura(SPELL_SHADOWMOURNE_VISUAL_HIGH);
     }
 
     void Register() override
@@ -3805,7 +3805,7 @@ class spell_item_elixir_of_shadows : public SpellScript
     {
         if (Player* player = GetCaster()->ToPlayer())
             if (Pet* pet = player->GetPet())
-                pet->AddAura(37678 /*Elixir of Shadows*/, pet);
+                pet->AddAura(37678 /*Elixir of Shadows*/);
     }
 
     void Register() override

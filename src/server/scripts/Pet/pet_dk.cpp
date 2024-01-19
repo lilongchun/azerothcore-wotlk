@@ -126,7 +126,7 @@ public:
         {
             RemoveTargetAura();
             _targetGUID = who->GetGUID();
-            me->AddAura(SPELL_DK_SUMMON_GARGOYLE_1, who);
+            who->AddAura(SPELL_DK_SUMMON_GARGOYLE_1);
             ScriptedAI::AttackStart(who);
         }
 
@@ -275,8 +275,8 @@ public:
                 {
                     if (Player* player = owner->ToPlayer())
                     {
-                        player->RemoveAurasDueToSpell(SPELL_DK_RAISE_ALLY); // Remove Raise Ally aura
-                        player->RemoveAurasDueToSpell(SPELL_GHOUL_FRENZY); // Remove Frenzy aura
+                        player->RemoveAura(SPELL_DK_RAISE_ALLY); // Remove Raise Ally aura
+                        player->RemoveAura(SPELL_GHOUL_FRENZY); // Remove Frenzy aura
                         //player->ClearResurrectRequestData();
                     }
                 }
@@ -328,7 +328,7 @@ public:
         void InitializeAI() override
         {
             // Xinef: Hit / Expertise scaling
-            me->AddAura(61017, me);
+            me->AddAura(61017);
             if (Unit* owner = me->GetOwner())
                 me->GetMotionMaster()->MoveFollow(owner, 0.01f, me->GetFollowAngle(), MOTION_SLOT_CONTROLLED);
 

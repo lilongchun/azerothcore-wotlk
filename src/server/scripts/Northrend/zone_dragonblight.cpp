@@ -411,7 +411,7 @@ public:
         void HideNozdormu()
         {
             if (Creature* cr = me->FindNearestCreature(NPC_NOZDORMU, 100.0f, true))
-                cr->AddAura(SPELL_NOZDORMU_INVIS, cr);
+                cr->AddAura(SPELL_NOZDORMU_INVIS);
         }
 
         void UpdateAI(uint32 diff) override
@@ -1278,7 +1278,7 @@ public:
                     if (Creature* x = me->FindNearestCreature(NPC_SAC_LIGHTS_VENGEANCE_VEH_2, 150.0f, true))
                         if (Creature* c = me->FindNearestCreature(NPC_SAC_LIGHTS_VENGEANCE_BUNNY, 150.0f, true))
                         {
-                            c->RemoveAurasDueToSpell(SPELL_SAC_HOLY_ZONE_AURA);
+                            c->RemoveAura(SPELL_SAC_HOLY_ZONE_AURA);
                             if (Creature* l = me->SummonCreature(NPC_SAC_LIGHTS_VENGEANCE, *c, TEMPSUMMON_MANUAL_DESPAWN))
                             {
                                 x->SetCanFly(true);
@@ -1288,7 +1288,7 @@ public:
                                 l->EnterVehicle(x, 1);
                                 //l->ClearUnitState(UNIT_STATE_ONVEHICLE);
                                 l->CastSpell(l, SPELL_SAC_HOLY_BOMB_VISUAL, false);
-                                l->AddAura(SPELL_SAC_HOLY_BOMB_VISUAL, l);
+                                l->AddAura(SPELL_SAC_HOLY_BOMB_VISUAL);
                                 events.ScheduleEvent(16, 5s);
                             }
                         }
@@ -1297,7 +1297,7 @@ public:
                     if (Creature* c = me->FindNearestCreature(NPC_SAC_LIGHTS_VENGEANCE, 150.0f, true))
                         c->CastSpell(c, SPELL_SAC_ZAP_GHOULS_AURA, true);
                     if (Creature* c = me->FindNearestCreature(NPC_SAC_VEGARD_1, 50.0f, true))
-                        c->RemoveAurasDueToSpell(SPELL_SAC_VEGARD_SUMMON_GHOULS_AURA);
+                        c->RemoveAura(SPELL_SAC_VEGARD_SUMMON_GHOULS_AURA);
                     events.ScheduleEvent(17, 12s);
                     break;
                 case 17: // kill vegard
@@ -1350,7 +1350,7 @@ public:
                 target->CastSpell((Unit*)nullptr, SPELL_SAC_THROW_HAMMER, true);
                 target->ToCreature()->DespawnOrUnsummon(1);
                 if (Unit* c = target->GetVehicleBase())
-                    c->RemoveAurasDueToSpell(SPELL_SAC_HOLY_ZONE_AURA);
+                    c->RemoveAura(SPELL_SAC_HOLY_ZONE_AURA);
             }
         }
     };
@@ -1474,7 +1474,7 @@ public:
 
         void JustDied(Unit* /*killer*/) override
         {
-            me->RemoveAurasDueToSpell(SPELL_SAC_GHOUL_AREA_AURA);
+            me->RemoveAura(SPELL_SAC_GHOUL_AREA_AURA);
             me->m_Events.AddEvent(new SACDeactivateEvent(me), me->m_Events.CalculateTime(4000));
         }
 

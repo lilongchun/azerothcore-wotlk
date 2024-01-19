@@ -1214,7 +1214,7 @@ void AuraEffect::CleanupTriggeredSpells(Unit* target)
             uint32(m_spellInfo->GetDuration()) == m_spellInfo->Effects[GetEffIndex()].Amplitude)
         return;
 
-    target->RemoveAurasDueToSpell(tSpellId, GetCasterGUID());
+    target->RemoveAura(tSpellId, GetCasterGUID());
 }
 
 void AuraEffect::HandleShapeshiftBoosts(Unit* target, bool apply) const
@@ -1377,7 +1377,7 @@ void AuraEffect::HandleShapeshiftBoosts(Unit* target, bool apply) const
             // Improved Barkskin - apply/remove armor bonus due to shapeshift
             if (player->HasTalent(63410, player->GetActiveSpec()) || player->HasTalent(63411, player->GetActiveSpec()))
             {
-                target->RemoveAurasDueToSpell(66530);
+                target->RemoveAura(66530);
                 if (GetMiscValue() == FORM_TRAVEL || GetMiscValue() == FORM_NONE) // "while in Travel Form or while not shapeshifted"
                     target->CastSpell(target, 66530, true);
             }
@@ -1474,7 +1474,7 @@ void AuraEffect::HandleShapeshiftBoosts(Unit* target, bool apply) const
         {
             if (player->HasTalent(63410, player->GetActiveSpec()) || player->HasTalent(63411, player->GetActiveSpec()))
             {
-                target->RemoveAurasDueToSpell(66530);
+                target->RemoveAura(66530);
                 target->CastSpell(target, 66530, true);
             }
         }
@@ -1768,7 +1768,7 @@ void AuraEffect::HandleSpiritOfRedemption(AuraApplication const* aurApp, uint8 m
     if (apply)
         target->CastSpell(target, 62371, true);
     else
-        target->RemoveAurasDueToSpell(62371);
+        target->RemoveAura(62371);
 }
 
 void AuraEffect::HandleAuraGhost(AuraApplication const* aurApp, uint8 mode, bool apply) const
@@ -1941,7 +1941,7 @@ void AuraEffect::HandleAuraModShapeshift(AuraApplication const* aurApp, uint8 mo
 
                     // and polymorphic affects
                     if (target->IsPolymorphed())
-                        target->RemoveAurasDueToSpell(target->getTransForm());
+                        target->RemoveAura(target->getTransForm());
                     break;
                 }
             default:
@@ -3686,7 +3686,7 @@ void AuraEffect::HandleAuraControlVehicle(AuraApplication const* aurApp, uint8 m
 
         caster->_ExitVehicle();
         // some SPELL_AURA_CONTROL_VEHICLE auras have a dummy effect on the player - remove them
-        caster->RemoveAurasDueToSpell(GetId());
+        caster->RemoveAura(GetId());
     }
 }
 
@@ -5528,7 +5528,7 @@ void AuraEffect::HandleAuraDummy(AuraApplication const* aurApp, uint8 mode, bool
                     break;
                 case 71563:
                     {
-                        if (Aura* newAura = target->AddAura(71564, target))
+                        if (Aura* newAura = target->AddAura(71564))
                             newAura->SetStackAmount(newAura->GetSpellInfo()->StackAmount);
                         return;
                     }
@@ -5697,7 +5697,7 @@ void AuraEffect::HandleAuraDummy(AuraApplication const* aurApp, uint8 mode, bool
                                     caster->CastSpell(target, spell->Id, true, nullptr, nullptr, GetCasterGUID());
                                 break;
                             }
-                            target->RemoveAurasDueToSpell(spellId);
+                            target->RemoveAura(spellId);
                             break;
                         }
                     // Restless Strength
@@ -5711,7 +5711,7 @@ void AuraEffect::HandleAuraDummy(AuraApplication const* aurApp, uint8 mode, bool
                                     caster->CastSpell(target, spell->Id, true, nullptr, nullptr, GetCasterGUID());
                                 break;
                             }
-                            target->RemoveAurasDueToSpell(spellId);
+                            target->RemoveAura(spellId);
                             break;
                         }
                     // Tag Murloc
@@ -6291,7 +6291,7 @@ void AuraEffect::HandlePeriodicDummyAuraTick(Unit* target, Unit* caster) const
             {
                 // Periodic need for remove visual on stun/fear/silence lost
                 if (!(target->GetUnitFlags() & (UNIT_FLAG_STUNNED | UNIT_FLAG_FLEEING | UNIT_FLAG_SILENCED)))
-                    target->RemoveAurasDueToSpell(52179);
+                    target->RemoveAura(52179);
                 break;
             }
             break;
@@ -6380,7 +6380,7 @@ void AuraEffect::HandlePeriodicTriggerSpellAuraTick(Unit* target, Unit* caster) 
                                 target->SendEnergizeSpellLog(caster, 27746, 10, POWER_MANA);
                             }
                             else
-                                target->RemoveAurasDueToSpell(27746);
+                                target->RemoveAura(27746);
                             return;
                         // Frost Blast
                         case 27808:
@@ -6487,7 +6487,7 @@ void AuraEffect::HandlePeriodicTriggerSpellAuraTick(Unit* target, Unit* caster) 
                             {
                                 // Need remove self if Lightning Shield not active
                                 if (!target->GetAuraEffect(SPELL_AURA_PROC_TRIGGER_SPELL, SPELLFAMILY_SHAMAN, 0x400, 0, 0))
-                                    target->RemoveAurasDueToSpell(28820);
+                                    target->RemoveAura(28820);
                                 return;
                             }
                     }
@@ -6670,7 +6670,7 @@ void AuraEffect::HandlePeriodicDamageAurasTick(Unit* target, Unit* caster) const
             case 39215:  // Gushing Wound
                 if (target->IsFullHealth())
                 {
-                    target->RemoveAurasDueToSpell(GetSpellInfo()->Id);
+                    target->RemoveAura(GetSpellInfo()->Id);
                     return;
                 }
                 break;
@@ -6679,7 +6679,7 @@ void AuraEffect::HandlePeriodicDamageAurasTick(Unit* target, Unit* caster) const
                     uint32 percent = GetSpellInfo()->Effects[EFFECT_1].CalcValue(caster);
                     if (!target->HealthBelowPct(percent))
                     {
-                        target->RemoveAurasDueToSpell(GetSpellInfo()->Id);
+                        target->RemoveAura(GetSpellInfo()->Id);
                         return;
                     }
                     break;

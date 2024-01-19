@@ -122,7 +122,7 @@ public:
                 {
                     if (Creature* RWORG = ObjectAccessor::GetCreature(*me, _RavenousworgGUID))
                         RWORG->GetMotionMaster()->MovePoint(0, Mrfloppy->GetPositionX(), Mrfloppy->GetPositionY(), Mrfloppy->GetPositionZ());
-                    me->AddAura(SPELL_MRFLOPPY, Mrfloppy);
+                    Mrfloppy->AddAura(SPELL_MRFLOPPY);
                 }
                 break;
             case 19:
@@ -916,7 +916,7 @@ public:
             if (emote == TEXT_EMOTE_KISS && me->IsWithinDistInMap(player, 30.0f) && player->HasItemCount(ITEM_WARTS_B_GONE_LIP_BALM, 1, false))
             {
                 if (!player->HasAura(SPELL_WARTSBGONE_LIP_BALM))
-                    player->AddAura(SPELL_WARTS, player);
+                    player->AddAura(SPELL_WARTS);
                 else
                 {
                     // Removes SPELL_WARTSBGONE_LIP_BALM
@@ -924,7 +924,7 @@ public:
 
                     if (me->GetEntry() == NPC_LAKE_FROG)
                     {
-                        me->AddAura(SPELL_FROG_LOVE, me);
+                        me->AddAura(SPELL_FROG_LOVE);
                         me->GetMotionMaster()->MoveFollow(player, 0.3f, frand(M_PI / 2, M_PI + (M_PI / 2)));
                         _following = true;
                     }
@@ -1198,7 +1198,7 @@ public:
             float horizontalSpeed = 3.0f;
             float verticalSpeed = 40.0f;
             player->KnockbackFrom(caster->GetPositionX(), caster->GetPositionY(), horizontalSpeed, verticalSpeed);
-            player->RemoveAurasDueToSpell(SPELL_WARHEAD_FUSE);
+            player->RemoveAura(SPELL_WARHEAD_FUSE);
 
             std::list<Creature*> explosionBunnys;
             caster->GetCreatureListWithEntryInGrid(explosionBunnys, NPC_ALLIANCE_LUMBERBOAT_EXPLOSIONS, 90.0f);
@@ -1314,7 +1314,7 @@ class spell_frog_kiss : public SpellScript
     {
         if (Player* target = GetHitPlayer())
         {
-            target->RemoveAurasDueToSpell(SPELL_WARTSBGONE_LIP_BALM);
+            target->RemoveAura(SPELL_WARTSBGONE_LIP_BALM);
         }
     }
 

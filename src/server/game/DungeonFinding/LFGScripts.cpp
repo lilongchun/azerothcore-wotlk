@@ -105,7 +105,7 @@ namespace lfg
             {
                 sLFGMgr->LeaveLfg(player->GetGUID());
                 sLFGMgr->LeaveAllLfgQueues(player->GetGUID(), true);
-                player->RemoveAurasDueToSpell(LFG_SPELL_LUCK_OF_THE_DRAW);
+                player->RemoveAura(LFG_SPELL_LUCK_OF_THE_DRAW);
                 player->TeleportTo(player->m_homebindMapId, player->m_homebindX, player->m_homebindY, player->m_homebindZ, player->m_homebindO);
                 LOG_DEBUG("lfg", "LFGPlayerScript::OnMapChanged, Player {} ({}) is in LFG dungeon map but does not have a valid group! Teleporting to homebind.",
                     player->GetName(), player->GetGUID().ToString());
@@ -121,7 +121,7 @@ namespace lfg
         }
         else
         {
-            player->RemoveAurasDueToSpell(LFG_SPELL_LUCK_OF_THE_DRAW);
+            player->RemoveAura(LFG_SPELL_LUCK_OF_THE_DRAW);
 
             // Xinef: Destroy group if only one player is left
             if (Group* group = player->GetGroup())
@@ -230,7 +230,7 @@ namespace lfg
             if (method != GROUP_REMOVEMETHOD_KICK_LFG && state != LFG_STATE_FINISHED_DUNGEON &&
                     player->HasAura(LFG_SPELL_DUNGEON_COOLDOWN) && players >= LFG_GROUP_KICK_VOTES_NEEDED)
             {
-                player->AddAura(LFG_SPELL_DUNGEON_DESERTER, player);
+                player->AddAura(LFG_SPELL_DUNGEON_DESERTER);
             }
             //else if (state == LFG_STATE_BOOT)
             // Update internal kick cooldown of kicked

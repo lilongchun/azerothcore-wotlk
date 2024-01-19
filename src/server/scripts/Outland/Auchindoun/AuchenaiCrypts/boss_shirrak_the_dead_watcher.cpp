@@ -83,7 +83,7 @@ struct boss_shirrak_the_dead_watcher : public BossAI
                         Aura* aura = player->GetAura(SPELL_INHIBIT_MAGIC);
                         if (!aura)
                         {
-                            aura = me->AddAura(SPELL_INHIBIT_MAGIC, player);
+                            aura = player->AddAura(SPELL_INHIBIT_MAGIC);
                         }
                         else
                         {
@@ -97,7 +97,7 @@ struct boss_shirrak_the_dead_watcher : public BossAI
                     }
                     else
                     {
-                        player->RemoveAurasDueToSpell(SPELL_INHIBIT_MAGIC);
+                        player->RemoveAura(SPELL_INHIBIT_MAGIC);
                     }
                 }
             }

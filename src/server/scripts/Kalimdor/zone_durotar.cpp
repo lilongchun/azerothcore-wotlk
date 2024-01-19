@@ -122,8 +122,8 @@ public:
                             if (!summoner->HasAura(SPELL_NO_SUMMON_AURA) && !summoner->HasAura(SPELL_SUMMON_ZENTABRA_TRIGGER)
                                     && !summoner->IsInCombat())
                             {
-                                me->AddAura(SPELL_NO_SUMMON_AURA, summoner);
-                                me->AddAura(SPELL_DETECT_INVIS, summoner);
+                                summoner->AddAura(SPELL_NO_SUMMON_AURA);
+                                summoner->AddAura(SPELL_DETECT_INVIS);
                                 summoner->CastSpell(summoner, SPELL_SUMMON_MATRIARCH, true);
                                 Talk(SAY_MATRIARCH_AGGRO, summoner);
                             }
@@ -185,10 +185,10 @@ public:
 
             if (Unit* vehSummoner = victim->ToTempSummon()->GetSummonerUnit())
             {
-                vehSummoner->RemoveAurasDueToSpell(SPELL_NO_SUMMON_AURA);
-                vehSummoner->RemoveAurasDueToSpell(SPELL_DETECT_INVIS);
-                vehSummoner->RemoveAurasDueToSpell(SPELL_SPIRIT_OF_THE_TIGER_RIDER);
-                vehSummoner->RemoveAurasDueToSpell(SPELL_SUMMON_ZENTABRA_TRIGGER);
+                vehSummoner->RemoveAura(SPELL_NO_SUMMON_AURA);
+                vehSummoner->RemoveAura(SPELL_DETECT_INVIS);
+                vehSummoner->RemoveAura(SPELL_SPIRIT_OF_THE_TIGER_RIDER);
+                vehSummoner->RemoveAura(SPELL_SUMMON_ZENTABRA_TRIGGER);
             }
             me->DespawnOrUnsummon();
         }
@@ -204,13 +204,13 @@ public:
                 me->SetUnitFlag(UNIT_FLAG_NON_ATTACKABLE);
                 if (Unit* vehSummoner = attacker->ToTempSummon()->GetSummonerUnit())
                 {
-                    vehSummoner->AddAura(SPELL_SUMMON_ZENTABRA_TRIGGER, vehSummoner);
+                    vehSummoner->AddAura(SPELL_SUMMON_ZENTABRA_TRIGGER);
                     vehSummoner->CastSpell(vehSummoner, SPELL_SUMMON_ZENTABRA, true);
                     attacker->CastSpell(attacker, SPELL_EJECT_PASSENGERS, true);
-                    vehSummoner->RemoveAurasDueToSpell(SPELL_NO_SUMMON_AURA);
-                    vehSummoner->RemoveAurasDueToSpell(SPELL_DETECT_INVIS);
-                    vehSummoner->RemoveAurasDueToSpell(SPELL_SPIRIT_OF_THE_TIGER_RIDER);
-                    vehSummoner->RemoveAurasDueToSpell(SPELL_SUMMON_ZENTABRA_TRIGGER);
+                    vehSummoner->RemoveAura(SPELL_NO_SUMMON_AURA);
+                    vehSummoner->RemoveAura(SPELL_DETECT_INVIS);
+                    vehSummoner->RemoveAura(SPELL_SPIRIT_OF_THE_TIGER_RIDER);
+                    vehSummoner->RemoveAura(SPELL_SUMMON_ZENTABRA_TRIGGER);
                 }
 
                 me->DespawnOrUnsummon();
@@ -240,7 +240,7 @@ public:
                         {
                             if (tiger->IsSummon())
                                 if (Unit* vehSummoner = tiger->ToTempSummon()->GetSummonerUnit())
-                                    me->AddAura(SPELL_NO_SUMMON_AURA, vehSummoner);
+                                    vehSummoner->AddAura(SPELL_NO_SUMMON_AURA);
                         }
                         _events.ScheduleEvent(EVENT_NOSUMMON, 50s);
                         break;
@@ -313,8 +313,8 @@ public:
         void Reset() override
         {
             _complete = false;
-            me->AddAura(SPELL_VOLUNTEER_AURA, me);
-            me->AddAura(SPELL_MOUNTING_CHECK, me);
+            me->AddAura(SPELL_VOLUNTEER_AURA);
+            me->AddAura(SPELL_MOUNTING_CHECK);
             DoCast(me, SPELL_PETACT_AURA);
             me->SetReactState(REACT_PASSIVE);
             Talk(SAY_VOLUNTEER_START);
@@ -341,7 +341,7 @@ public:
                 _complete = true;    // Preventing from giving credit twice
                 DoCast(me, SPELL_TURNIN);
                 DoCast(me, SPELL_QUEST_CREDIT);
-                me->RemoveAurasDueToSpell(SPELL_MOUNTING_CHECK);
+                me->RemoveAura(SPELL_MOUNTING_CHECK);
                 me->Dismount();
                 Talk(SAY_VOLUNTEER_END);
                 me->GetMotionMaster()->MovePoint(POINT_URUZIN, caster->GetPositionX(), caster->GetPositionY(), caster->GetPositionZ());

@@ -796,7 +796,7 @@ void SmartScript::ProcessAction(SmartScriptHolder& e, Unit* unit, uint32 var0, u
             {
                 if (IsUnit(target))
                 {
-                    target->ToUnit()->AddAura(e.action.cast.spell, target->ToUnit());
+                    target->ToUnit()->AddAura(e.action.cast.spell);
                     LOG_DEBUG("scripts.ai", "SmartScript::ProcessAction:: SMART_ACTION_ADD_AURA: Adding aura {} to unit {}",
                               e.action.cast.spell, target->GetGUID().ToString());
                 }
@@ -1017,7 +1017,7 @@ void SmartScript::ProcessAction(SmartScriptHolder& e, Unit* unit, uint32 var0, u
                             aur->ModCharges(-static_cast<int32>(e.action.removeAura.charges), AURA_REMOVE_BY_EXPIRE);
                     }
                     else
-                        target->ToUnit()->RemoveAurasDueToSpell(e.action.removeAura.spell);
+                        target->ToUnit()->RemoveAura(e.action.removeAura.spell);
                 }
                 else
                     target->ToUnit()->RemoveAllAuras();
@@ -2729,10 +2729,10 @@ void SmartScript::ProcessAction(SmartScriptHolder& e, Unit* unit, uint32 var0, u
                 if (Player* playerTarget = target->ToPlayer())
                 {
                     playerTarget->RemoveArenaSpellCooldowns();
-                    playerTarget->RemoveAurasDueToSpell(57724); // Spell Shaman Debuff - Sated (Heroism)
-                    playerTarget->RemoveAurasDueToSpell(57723); // Spell Shaman Debuff - Exhaustion (Bloodlust)
-                    playerTarget->RemoveAurasDueToSpell(2825);  // Bloodlust
-                    playerTarget->RemoveAurasDueToSpell(32182); // Heroism
+                    playerTarget->RemoveAura(57724); // Spell Shaman Debuff - Sated (Heroism)
+                    playerTarget->RemoveAura(57723); // Spell Shaman Debuff - Exhaustion (Bloodlust)
+                    playerTarget->RemoveAura(2825);  // Bloodlust
+                    playerTarget->RemoveAura(32182); // Heroism
                 }
             }
 

@@ -1037,7 +1037,7 @@ class spell_midsummer_fling_torch : public SpellScript
                 if (const WorldLocation* loc = GetExplTargetDest())
                 {
                     caster->CastSpell(loc->GetPositionX(), loc->GetPositionY(), loc->GetPositionZ(), SPELL_MISSED_TORCH, true);
-                    caster->RemoveAurasDueToSpell(SPELL_TORCH_COUNTER);
+                    caster->RemoveAura(SPELL_TORCH_COUNTER);
                 }
             return;
         }
