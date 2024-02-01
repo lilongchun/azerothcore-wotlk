@@ -67,6 +67,7 @@ enum Spells
     SPELL_MOUTH_TENTACLE                        = 26332,
     SPELL_EXIT_STOMACH_KNOCKBACK                = 25383,
     SPELL_DIGESTIVE_ACID                        = 26476,
+    SPELL_PORT_OUT_STOMACH_EFFECT               = 26648,    // used to kill players inside the stomach on evade
 
     // Tentacles
     SPELL_SUBMERGE_VISUAL                       = 26234,
@@ -90,7 +91,8 @@ enum Actions
 
 enum TaskGroups
 {
-    GROUP_BEAM_PHASE = 1
+    GROUP_BEAM_PHASE = 1,
+    GROUP_STOMACH_DEATH = 2
 };
 
 enum Phases
@@ -378,14 +380,16 @@ struct boss_cthun : public BossAI
     boss_cthun(Creature* creature) : BossAI(creature, DATA_CTHUN)
     {
         SetCombatMovement(false);
+        _map = me->GetMap();
     }
 
     void Reset() override
     {
         //One random wisper every 90 - 300 seconds
-        WisperTimer = 90000;
+        _whisperTimer = 90000;
 
         _fleshTentaclesKilled = 0;
+        _stomachDeathScheduled = false;
 
         //Reset flags
         me->RemoveAurasDueToSpell(SPELL_TRANSFORM);
@@ -486,15 +490,11 @@ struct boss_cthun : public BossAI
         if (!UpdateVictim())
         {
             //No target so we'll use this section to do our random wispers instance wide
-            //WisperTimer
-            if (WisperTimer <= diff)
+            //WhisperTimer
+            if (_whisperTimer <= diff)
             {
-                Map* map = me->GetMap();
-                if (!map->IsDungeon())
-                    return;
-
                 //Play random sound to the zone
-                Map::PlayerList const& PlayerList = map->GetPlayers();
+                Map::PlayerList const& PlayerList = _map->GetPlayers();
 
                 if (!PlayerList.IsEmpty())
                 {
@@ -506,11 +506,34 @@ struct boss_cthun : public BossAI
                 }
 
                 //One random wisper every 90 - 300 seconds
-                WisperTimer = urand(90000, 300000);
+                _whisperTimer = urand(90000, 300000);
             }
-            else WisperTimer -= diff;
+            else _whisperTimer -= diff;
 
             return;
+        }
+
+        if (_IsEveryoneAffectedByDigestiveAcid())
+        {
+            if (!_stomachDeathScheduled)
+            {
+                scheduler.Schedule(10s, GROUP_STOMACH_DEATH, [this](TaskContext /*context*/)
+                {
+                    _map->DoForAllPlayers([&](Player* player)
+                    {
+                        player->CastSpell(player, SPELL_PORT_OUT_STOMACH_EFFECT, false);
+                    });
+                });
+                _stomachDeathScheduled = true;
+            }
+        }
+        else
+        {
+            if (_stomachDeathScheduled)
+            {
+                scheduler.CancelGroup(GROUP_STOMACH_DEATH);
+                _stomachDeathScheduled = false;
+            }
         }
 
         me->SetTarget();
@@ -570,10 +593,31 @@ struct boss_cthun : public BossAI
 
     private:
         //Out of combat whisper timer
-        uint32 WisperTimer;
+        uint32 _whisperTimer;
 
         //Body Phase
         uint8 _fleshTentaclesKilled;
+
+        //If no-one is outside
+        bool _stomachDeathScheduled;
+
+        //Map variable
+        Map* _map;
+
+        bool _IsEveryoneAffectedByDigestiveAcid() const
+        {
+            Map::PlayerList const& playerList = _map->GetPlayers();
+            for (auto const& itr : playerList)
+            {
+                if (Player* player = itr.GetSource())
+                {
+                    if (!player->HasAura(SPELL_DIGESTIVE_ACID))
+                        return false;
+                }
+            }
+            return true;
+        }
+
 };
 
 struct npc_eye_tentacle : public ScriptedAI
