@@ -41,6 +41,11 @@ void RandomMovementGenerator<Creature>::_setRandomLocation(Creature* creature)
     if (creature->_moveState != MAP_OBJECT_CELL_MOVE_NONE)
         return;
 
+    if (creature->IsRandomMovementPaused())
+        return;
+
+    creature->PauseRandomMovement(true);
+
     if (_validPointsVector[_currentPoint].empty())
     {
         if (_currentPoint == RANDOM_POINTS_NUMBER) // cant go anywhere from initial position, lets stay
