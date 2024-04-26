@@ -48,6 +48,11 @@
 //  see: https://github.com/azerothcore/azerothcore-wotlk/issues/9766
 #include "GridNotifiersImpl.h"
 
+enum broadcastTextIDs
+{
+    BROADCAST_TEXT_FLAG_OF_OWNERSHIP     = 28008
+};
+
 // 46642 - 5,000 Gold
 class spell_gen_5000_gold : public SpellScript
 {
@@ -126,7 +131,7 @@ class spell_the_flag_of_ownership : public SpellScript
         return true;
     }
 
-    void HandleScript(SpellEffIndex  /*effIndex*/)
+    void HandleScript(SpellEffIndex /*effIndex*/)
     {
         Unit* caster = GetCaster();
         if (!caster || caster->GetTypeId() != TYPEID_PLAYER)
@@ -135,8 +140,28 @@ class spell_the_flag_of_ownership : public SpellScript
         if (!target)
             return;
         caster->CastSpell(target, 52605, true);
+
+        const BroadcastText* bct = sObjectMgr->GetBroadcastText(BROADCAST_TEXT_FLAG_OF_OWNERSHIP);
+        if (!bct)
+            return;
+        Player* player = caster->ToPlayer();
+        LocaleConstant loc_idx = player->GetSession()->GetSessionDbLocaleIndex();
+
+        std::string formatString = bct->GetText(loc_idx, caster->getGender());
+        std::string targetName = target->GetName();
+        size_t pos = formatString.find("$n");
+        if (pos != std::string::npos) {
+            formatString.replace(pos, 2, targetName.c_str());
+        }
+
+        // TextEmote without the string replacement duplicates the character name
+        pos = formatString.find("%s ");
+        if (pos != std::string::npos) {
+            formatString.replace(pos, 3, "");
+        }
+
         char buff[100];
-        snprintf(buff, sizeof(buff), "%s plants the Flag of Ownership in the corpse of %s.", caster->GetName().c_str(), target->GetName().c_str());
+        snprintf(buff, sizeof(buff), formatString.c_str());
         caster->TextEmote(buff, caster);
         haveTarget = true;
     }
